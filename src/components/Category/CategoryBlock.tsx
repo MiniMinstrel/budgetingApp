@@ -1,4 +1,5 @@
 import Category from "@/src/objects/Category";
+import { RadialChart } from "./RadialChart/RadialChart";
 
 export default function CategoryBlock({ category }: { category: Category }) {
   return (
@@ -21,6 +22,10 @@ export default function CategoryBlock({ category }: { category: Category }) {
         className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
         View Details
       </button>
+      <RadialChart
+        spent={category.getAmountSpent()}
+        remaining={category.getRemainingBudget()}
+      />
     </div>
   );
 }
