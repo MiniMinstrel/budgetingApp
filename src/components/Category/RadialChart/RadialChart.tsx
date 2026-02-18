@@ -13,7 +13,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function percentageFormatter(value: number) {
-  return `${parseFloat((value * 100).toFixed(0))}%`;
+  return `${Math.floor(value * 100)}%`;
 }
 
 export function RadialChart({
@@ -99,7 +99,6 @@ export function RadialChart({
         <RadialBar
           dataKey="spent"
           stackId="a"
-          cornerRadius={32}
           fill={spentColor}
           className="stroke-transparent stroke-2"
         />
@@ -107,7 +106,6 @@ export function RadialChart({
           dataKey="remaining"
           fill="#36b893b"
           stackId="a"
-          cornerRadius={32}
           className="stroke-transparent stroke-2"
         />
       </RadialBarChart>

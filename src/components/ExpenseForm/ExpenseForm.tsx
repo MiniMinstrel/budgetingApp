@@ -31,7 +31,10 @@ export default function CategoryForm({
       <form
         onSubmit={handleExpenseSubmit}
         className="flex flex-col gap-4 p-4 border rounded">
-        <select name="category" required className="px-3 py-2 border rounded">
+        <select
+          name="category"
+          required
+          className="px-3 py-2 border rounded bg-background">
           <option value="">Select a category</option>
           {categories.map((category, index) => (
             <option key={index} value={index}>
