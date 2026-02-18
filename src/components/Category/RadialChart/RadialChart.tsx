@@ -87,7 +87,7 @@ export function RadialChart({
                     <tspan
                       x={viewBox.cx}
                       y={(viewBox.cy || 0) - 5}
-                      className="fill-background text-4xl font-extrabold">
+                      className="fill-[#36393B] text-4xl font-extrabold">
                       {percentageFormatter(spent / totalBudget)}{" "}
                     </tspan>
                   </text>
@@ -105,7 +105,7 @@ export function RadialChart({
         />
         <RadialBar
           dataKey="remaining"
-          fill="var(--background)"
+          fill="#36b893b"
           stackId="a"
           cornerRadius={32}
           className="stroke-transparent stroke-2"

@@ -17,7 +17,6 @@ export default function Home() {
   const [categories, setCategories] = useState<Category[]>([
     new Category("Groceries", 200, [
       { description: "Milk", amount: 40, date: new Date() },
-      { description: "Bread", amount: 50, date: new Date() },
     ]),
     new Category("Transportation", 300, [
       { description: "Plane", amount: 200, date: new Date() },

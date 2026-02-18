@@ -11,7 +11,7 @@ export default function CategoryBlock({ category }: { category: Category }) {
 
   if (!isLoaded) return null;
   return (
-    <div className="p-4 flex flex-col bg-foreground text-background rounded-lg shadow-md items-center justify-center size-fit">
+    <div className="p-4 flex flex-col bg-[#F5F5F5] text-[#36393B] rounded-lg shadow-md items-center justify-center size-fit">
       <RadialChart
         spent={category.getAmountSpent()}
         remaining={category.getRemainingBudget()}
