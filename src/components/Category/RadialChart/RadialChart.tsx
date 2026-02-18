@@ -30,6 +30,7 @@ export function RadialChart({
   const totalBudget = spent + remaining;
 
   const [spentColor, setSpentColor] = useState("#17ae4f");
+  const [finishAnimated, setFinishedAnimated] = useState(false);
 
   useEffect(() => {
     if (spent / totalBudget >= 0.9) {
@@ -46,19 +47,30 @@ export function RadialChart({
   ]);
 
   useEffect(() => {
-    setAnimatedData([{ spent: 100, remaining: 100 }]);
-
-    const timeout = setTimeout(() => {
+    if (finishAnimated) {
       setAnimatedData([
         {
           spent,
           remaining: remaining < 0 ? 0 : remaining,
         },
       ]);
-    }, 100);
+      return;
+    } else {
+      setAnimatedData([{ spent: 100, remaining: 100 }]);
 
-    return () => clearTimeout(timeout);
-  }, []);
+      const timeout = setTimeout(() => {
+        setAnimatedData([
+          {
+            spent,
+            remaining: remaining < 0 ? 0 : remaining,
+          },
+        ]);
+      }, 100);
+
+      setFinishedAnimated(true);
+      return () => clearTimeout(timeout);
+    }
+  }, [spent, remaining]);
 
   return (
     <ChartContainer
