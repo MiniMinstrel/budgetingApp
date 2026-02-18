@@ -15,19 +15,28 @@ export default function Home() {
   - A button to view the details of each category.
   */
   const [categories, setCategories] = useState<Category[]>([
-    new Category("Groceries", 500),
-    new Category("Transportation", 300),
-    new Category("Entertainment", 200),
+    new Category("Groceries", 200, [
+      { description: "Milk", amount: 40, date: new Date() },
+      { description: "Bread", amount: 50, date: new Date() },
+    ]),
+    new Category("Transportation", 300, [
+      { description: "Plane", amount: 200, date: new Date() },
+      { description: "Gas", amount: 25, date: new Date() },
+    ]),
+    new Category("Entertainment", 200, [
+      { description: "Movies", amount: 80, date: new Date() },
+      { description: "Concert", amount: 100, date: new Date() },
+    ]),
   ]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <div className="flex flex-col items-center justify-center w-3/4 flex-1 px-20 text-center">
+      <div className="flex flex-col items-center justify-center flex-1 px-20 text-center">
         <h1 className="text-6xl font-bold">Budgeting App</h1>
         <p className="mt-3 text-2xl">
           A simple budgeting app to help you manage your finances.
         </p>
-        <div className="mt-6 flex flex-col items-center justify-around max-w-4xl">
+        <div className="mt-6 flex flex-col md:flex-row gap-8 items-center justify-around">
           {categories.map((category, index) => (
             <CategoryBlock key={index} category={category} />
           ))}

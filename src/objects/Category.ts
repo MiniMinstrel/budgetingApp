@@ -4,11 +4,11 @@ class Category {
     private amountSpent: number;
     private expenses: Expense[];
 
-    constructor(name: string, maxBudget: number) {
+    constructor(name: string, maxBudget: number, expenses: Expense[] = []) {
         this.name = name;
         this.maxBudget = maxBudget;
-        this.amountSpent = 0;
-        this.expenses = [];
+        this.amountSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+        this.expenses = expenses;
     }
 
     getName(): string {

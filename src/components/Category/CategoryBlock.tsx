@@ -1,31 +1,35 @@
 import Category from "@/src/objects/Category";
 import { RadialChart } from "./RadialChart/RadialChart";
+import { useEffect, useState } from "react";
 
 export default function CategoryBlock({ category }: { category: Category }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
+  if (!isLoaded) return null;
   return (
-    <div className="p-4 flex flex-col">
-      <h2 className="text-2xl font-bold">{category.getName()}</h2>
-      <p>Total Budget: ${category.getMaxBudget()}</p>
-      <p>Amount Spent: ${category.getAmountSpent()}</p>
-      <p>Remaining Budget: ${category.getRemainingBudget()}</p>
-      <button
-        onClick={() => {
-          const details = category.getExpenses();
-          if (details.length === 0) {
-            alert("No expenses in this category");
-          } else {
-            alert(
-              `Expenses:\n\n${details.map((e) => `${e.description}: $${e.amount}`).join("\n")}`,
-            );
-          }
-        }}
-        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-        View Details
-      </button>
+    <div className="p-4 flex flex-col bg-foreground text-background rounded-lg shadow-md items-center justify-center size-fit">
       <RadialChart
         spent={category.getAmountSpent()}
         remaining={category.getRemainingBudget()}
       />
+      <h2 className="text-2xl font-bold">{category.getName()}</h2>
+      <div className="flex flex-row mt-4 w-full">
+        <p className="leading-[1.2] w-1/2">
+          ${category.getAmountSpent()}
+          <br />
+          Spent
+        </p>
+        <div className="w-px bg-background/50 mx-4" />
+        <p className="leading-[1.2] w-1/2">
+          ${category.getRemainingBudget()}
+          <br />
+          Available
+        </p>
+      </div>
     </div>
   );
 }
