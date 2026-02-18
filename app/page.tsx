@@ -36,7 +36,7 @@ export default function Home() {
         <p className="mt-3 text-2xl">
           A simple budgeting app to help you manage your finances.
         </p>
-        <div className="mt-6 flex flex-col md:flex-row gap-8 items-center justify-around">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((category, index) => (
             <CategoryBlock key={index} category={category} />
           ))}

@@ -23,10 +23,6 @@ export function RadialChart({
   spent: number;
   remaining: number;
 }) {
-  const chartData = [
-    { spent: spent, remaining: remaining < 0 ? 0 : remaining },
-  ];
-
   const totalBudget = spent + remaining;
 
   const [spentColor, setSpentColor] = useState("#17ae4f");
@@ -35,7 +31,7 @@ export function RadialChart({
   useEffect(() => {
     if (spent / totalBudget >= 0.9) {
       setSpentColor("#e74c3c");
-    } else if (spent / totalBudget > 0.6) {
+    } else if (spent / totalBudget >= 0.5) {
       setSpentColor("#f5a65b");
     } else {
       setSpentColor("#17ae4f");
@@ -75,7 +71,7 @@ export function RadialChart({
   return (
     <ChartContainer
       config={chartConfig}
-      className="w-[300px] h-[300px] -mt-14 -mb-32 -mx-12">
+      className="w-75 h-75 -mt-14 -mb-32 -mx-12">
       <RadialBarChart
         data={animatedData}
         startAngle={180}
