@@ -11,24 +11,35 @@ export default function CategoryBlock({ category }: { category: Category }) {
 
   if (!isLoaded) return null;
   return (
-    <div className="p-4 flex flex-col bg-[#F5F5F5] text-[#36393B] rounded-lg shadow-md items-center justify-center size-fit">
-      <RadialChart
-        spent={category.getAmountSpent()}
-        remaining={category.getRemainingBudget()}
-      />
-      <h2 className="text-2xl font-bold">{category.getName()}</h2>
-      <div className="flex flex-row mt-4 w-full">
-        <p className="leading-[1.2] w-1/2">
-          ${category.getAmountSpent()}
-          <br />
-          Spent
-        </p>
-        <div className="w-px bg-background/50 mx-4" />
-        <p className="leading-[1.2] w-1/2">
-          ${category.getRemainingBudget()}
-          <br />
-          Available
-        </p>
+    <div className="flex flex-col justify-around p-6 pt-4 pb-8 bg-[#F5F5F5] text-[#36393B] rounded-lg shadow-md items-center md:items-start gap-8">
+      <h1 className="text-4xl font-bold">{category.getName()}</h1>
+      <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8 min-w-full justify-around">
+        <div>
+          <RadialChart
+            spent={category.getAmountSpent()}
+            remaining={category.getRemainingBudget()}
+          />
+        </div>
+        <div className="flex flex-col justify-center text-md w-fit text-gray-500 justify-self-start h-fit mt-8 md:mt-0 min-w-3xs max-w-3xs">
+          <div>{category.getExpenses().length} Expenses</div>
+          <div>
+            {category.getExpenses().length > 0 && (
+              <ul className="mt-2 list-disc text-left list-inside w-fit">
+                {category
+                  .getExpenses()
+                  .reverse()
+                  .slice(0, 2)
+                  .map((expense, index) => (
+                    <li key={index}>
+                      {expense.description}: ${expense.amount} on{" "}
+                      {expense.date.toLocaleDateString()}
+                    </li>
+                  ))}
+                {category.getExpenses().length > 2 && <li>...</li>}
+              </ul>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -30,12 +30,12 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <div className="flex flex-col items-center justify-center flex-1 px-20 text-center">
+      <div className="flex flex-col items-center justify-center flex-1 px-10 text-center">
         <h1 className="text-6xl font-bold">Budgeting App</h1>
         <p className="mt-3 text-2xl">
           A simple budgeting app to help you manage your finances.
         </p>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="mt-6 grid md:grid-cols-1 lg:grid-cols-2 gap-8">
           {categories.map((category, index) => (
             <CategoryBlock key={index} category={category} />
           ))}

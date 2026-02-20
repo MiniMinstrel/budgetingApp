@@ -52,7 +52,7 @@ export function RadialChart({
       ]);
       return;
     } else {
-      setAnimatedData([{ spent: 100, remaining: 100 }]);
+      setAnimatedData([{ spent: 0, remaining: 100 }]);
 
       const timeout = setTimeout(() => {
         setAnimatedData([
@@ -71,12 +71,12 @@ export function RadialChart({
   return (
     <ChartContainer
       config={chartConfig}
-      className="w-75 h-75 -mt-14 -mb-32 -mx-12">
+      className="w-75 h-75 -mt-20 -mb-20 -mx-16">
       <RadialBarChart
         data={animatedData}
-        startAngle={180}
-        endAngle={0}
-        innerRadius={80}
+        startAngle={90}
+        endAngle={-270}
+        innerRadius={70}
         outerRadius={130}>
         <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
           <Label
@@ -85,10 +85,17 @@ export function RadialChart({
                 return (
                   <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle">
                     <tspan
-                      x={viewBox.cx}
-                      y={(viewBox.cy || 0) - 5}
+                      x={(viewBox.cx || 0) + 5}
+                      y={(viewBox.cy || 0) + 4}
                       className="fill-[#36393B] text-4xl font-extrabold">
                       {percentageFormatter(spent / totalBudget)}{" "}
+                    </tspan>
+                    <tspan
+                      x={viewBox.cx}
+                      y={(viewBox.cy || 0) + 25}
+                      textLength={totalBudget < 100 ? "25%" : "30%"}
+                      className="fill-[#36393B] text-xs">
+                      ${spent} out of ${totalBudget}
                     </tspan>
                   </text>
                 );

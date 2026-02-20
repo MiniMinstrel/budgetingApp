@@ -44,7 +44,7 @@ class Category {
     }
 
     addExpense(expense: Expense): void {
-        this.expenses.push(expense);
+        this.expenses.unshift(expense);
         this.amountSpent += expense.amount;
     }
 
