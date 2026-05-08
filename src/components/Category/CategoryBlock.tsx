@@ -41,7 +41,7 @@ export default function CategoryBlock({ category }: { category: Category }) {
   if (!isLoaded) return null;
   return (
     <>
-      <Card>
+      <Card className="pb-6 md:pb-10">
         <CardHeader>
           <CardTitle className="flex justify-between items-center text-4xl font-bold text-left">
             <p>{category.getName()}</p>
@@ -52,7 +52,7 @@ export default function CategoryBlock({ category }: { category: Category }) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="border-2 border-gray-300">
+                    className="border drop-shadow-md border-gray-300">
                     <PlusIcon />
                   </Button>
                 </DialogTrigger>
@@ -78,7 +78,7 @@ export default function CategoryBlock({ category }: { category: Category }) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="mt-0 border-2 border-gray-300">
+                    className="mt-0 border drop-shadow-md border-gray-300">
                     <Pencil />
                   </Button>
                 </DialogTrigger>
@@ -102,7 +102,8 @@ export default function CategoryBlock({ category }: { category: Category }) {
             </div>
           </CardTitle>
           <CardDescription className="text-left text-sm text-gray-500">
-            Total Budget: ${category.getMaxBudget()} <br />
+            {category.getExpenses().length} Expenses
+            <br />
           </CardDescription>
         </CardHeader>
         <CardContent>
