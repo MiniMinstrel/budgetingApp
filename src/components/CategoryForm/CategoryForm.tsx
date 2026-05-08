@@ -20,7 +20,7 @@ export default function CategoryForm({
   };
 
   return (
-    <div className="mt-6 w-full max-w-md">
+    <div className="w-full max-w-md">
       <form
         onSubmit={handleCategorySubmit}
         className="flex flex-col gap-4 p-4 border rounded">
