@@ -34,18 +34,18 @@ export default function ExpenseForm({
         onSubmit={handleExpenseSubmit}
         className="flex flex-col gap-4 p-4 border rounded">
         <input
+          type="text"
+          name="description"
+          placeholder="Expense description"
+          className="px-3 py-2 border rounded"
+        />
+        <input
           type="number"
           name="amount"
           placeholder="Expense amount"
           required
           min="0"
           step="0.01"
-          className="px-3 py-2 border rounded"
-        />
-        <input
-          type="text"
-          name="description"
-          placeholder="Expense description"
           className="px-3 py-2 border rounded"
         />
         <DialogClose asChild>

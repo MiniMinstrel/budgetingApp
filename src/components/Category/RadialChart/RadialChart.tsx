@@ -85,17 +85,10 @@ export function RadialChart({
                 return (
                   <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle">
                     <tspan
-                      x={(viewBox.cx || 0) + 5}
-                      y={(viewBox.cy || 0) + 4}
+                      x={(viewBox.cx || 0) + 4}
+                      y={(viewBox.cy || 0) + 14}
                       className="fill-[#36393B] text-4xl font-extrabold">
                       {percentageFormatter(spent / totalBudget)}{" "}
-                    </tspan>
-                    <tspan
-                      x={viewBox.cx}
-                      y={(viewBox.cy || 0) + 25}
-                      textLength={totalBudget < 100 ? "25%" : "30%"}
-                      className="fill-[#36393B] text-xs">
-                      ${spent} out of ${totalBudget}
                     </tspan>
                   </text>
                 );

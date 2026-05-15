@@ -53,7 +53,7 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
     <>
       <Card className="pb-6 md:pb-10">
         <CardHeader>
-          <CardTitle className="flex justify-between items-center text-4xl font-bold text-left">
+          <CardTitle className="flex justify-between items-center text-4xl font-bold text-left ml-0">
             <p>{category.getName()}</p>
             {}
             <div className="hidden md:flex gap-2">
@@ -66,7 +66,7 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
                     <PlusIcon />
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-sm">
+                <DialogContent className="sm:max-w-xs">
                   <DialogHeader>
                     <DialogTitle>Add Expense</DialogTitle>
                     <DialogDescription asChild>
@@ -95,8 +95,8 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
               </Dialog>
             </div>
           </CardTitle>
-          <CardDescription className="text-left text-sm text-gray-500">
-            {category.getExpenses().length} Expenses
+          <CardDescription className="text-left text-sm text-gray-500 ml-0.5">
+            {category.getExpenses().length} Expenses || ${category.getAmountSpent()} / ${category.getMaxBudget()}
             <br />
           </CardDescription>
         </CardHeader>
@@ -158,7 +158,7 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
                       <PlusIcon />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-sm">
+                  <DialogContent className="sm:max-w-xs">
                     <DialogHeader>
                       <DialogTitle>Add Expense</DialogTitle>
                       <DialogDescription asChild>
