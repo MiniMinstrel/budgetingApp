@@ -56,7 +56,7 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
           <CardTitle className="flex justify-between items-center text-4xl font-bold text-left">
             <p>{category.getName()}</p>
             {}
-            <div className="flex gap-2">
+            <div className="hidden md:flex gap-2">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button
@@ -145,6 +145,46 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
                     </TableBody>
                   </Table>
                 )}
+              </div>
+            </div>
+            <div className="flex w-full flex-col items-center gap-2 mt-4 md:hidden">
+              <div className="flex gap-2">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="border drop-shadow-md border-gray-300">
+                      <PlusIcon />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>Add Expense</DialogTitle>
+                      <DialogDescription asChild>
+                        <ExpenseForm onAddExpense={onAddExpense} />
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger className="-mt-2" asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="mt-0 border drop-shadow-md border-gray-300">
+                      <Pencil />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>Edit Category</DialogTitle>
+                      <DialogDescription asChild>
+                        <EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={onChangeInformation} />
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>
