@@ -44,10 +44,6 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
     setIsLoaded(true);
   }, []);
 
-  useEffect(() => {
-    console.log(category);
-  }, [category]);
-
   if (!isLoaded) return null;
   return (
     <>
@@ -55,7 +51,7 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
         <CardHeader>
           <CardTitle className="flex justify-between items-center text-4xl font-bold text-left ml-0">
             <p>{category.getName()}</p>
-            {}
+            { }
             <div className="hidden md:flex gap-2">
               <Dialog>
                 <DialogTrigger asChild>
@@ -122,7 +118,6 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
                     <TableBody>
                       {category
                         .getExpenses()
-                        .reverse()
                         .slice(0, 2)
                         .map((expense, index) => (
                           <TableRow key={index}>

@@ -43,11 +43,6 @@ class Category {
         this.expenses = expenses;
     }
 
-    addExpense(expense: Expense): void {
-        this.expenses.unshift(expense);
-        this.amountSpent += expense.amount;
-    }
-
     getRemainingBudget(): number {
         return this.maxBudget - this.amountSpent;
     }
