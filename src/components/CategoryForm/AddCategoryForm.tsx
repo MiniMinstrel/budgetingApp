@@ -1,6 +1,7 @@
 import Category from "@/src/objects/Category";
+import { DialogClose } from "@/components/ui/dialog";
 
-export default function CategoryForm({
+export default function AddCategoryForm({
   categories,
   setCategories,
 }: {
@@ -40,11 +41,13 @@ export default function CategoryForm({
           step="0.01"
           className="px-3 py-2 border rounded"
         />
-        <button
+        <DialogClose asChild>
+          <button
           type="submit"
           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
           Add Category
         </button>
+        </DialogClose>
       </form>
     </div>
   );

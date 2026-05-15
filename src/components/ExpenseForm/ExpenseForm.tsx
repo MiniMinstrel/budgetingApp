@@ -1,27 +1,29 @@
-import Category from "@/src/objects/Category";
+import React from "react";
+import { DialogClose } from "@/components/ui/dialog";
 
-export default function CategoryForm({
-  categories,
-  setCategories,
+interface Expense {
+  description: string;
+  amount: number;
+  date: Date;
+}
+
+export default function ExpenseForm({
+  onAddExpense,
 }: {
-  categories: Category[];
-  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+  onAddExpense: (expense: Expense) => void;
 }) {
   const handleExpenseSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const categoryIndex = parseInt(formData.get("category") as string);
     const amount = parseFloat(formData.get("amount") as string);
     const description = formData.get("description") as string;
-    if (categoryIndex >= 0 && amount > 0) {
-      const updatedCategories = [...categories];
+    if (amount > 0) {
       const expense = {
         description,
         amount,
         date: new Date(),
       };
-      updatedCategories[categoryIndex].addExpense(expense);
-      setCategories(updatedCategories);
+      onAddExpense(expense);
       e.currentTarget.reset();
     }
   };
@@ -31,17 +33,6 @@ export default function CategoryForm({
       <form
         onSubmit={handleExpenseSubmit}
         className="flex flex-col gap-4 p-4 border rounded">
-        <select
-          name="category"
-          required
-          className="px-3 py-2 border rounded bg-background">
-          <option value="">Select a category</option>
-          {categories.map((category, index) => (
-            <option key={index} value={index}>
-              {category.getName()}
-            </option>
-          ))}
-        </select>
         <input
           type="number"
           name="amount"
@@ -57,11 +48,13 @@ export default function CategoryForm({
           placeholder="Expense description"
           className="px-3 py-2 border rounded"
         />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-          Add Expense
-        </button>
+        <DialogClose asChild>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+            Add Expense
+          </button>
+        </DialogClose>
       </form>
     </div>
   );

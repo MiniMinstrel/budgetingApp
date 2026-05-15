@@ -16,8 +16,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   Table,
@@ -29,14 +27,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { X, Pencil, PlusIcon } from "lucide-react";
+import { Edit, Pencil, PlusIcon } from "lucide-react";
+import ExpenseForm from "../ExpenseForm/ExpenseForm";
+import EditCategoryForm from "../CategoryForm/EditCategoryForm";
 
-export default function CategoryBlock({ category }: { category: Category }) {
+interface Expense {
+  description: string;
+  amount: number;
+  date: Date;
+}
+
+export default function CategoryBlock({ category, onAddExpense, onChangeInformation }: { category: Category; onAddExpense: (expense: Expense) => void; onChangeInformation: (name: string, maxBudget: number) => void }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  useEffect(() => {
+    console.log(category);
+  }, [category]);
 
   if (!isLoaded) return null;
   return (
@@ -58,19 +68,11 @@ export default function CategoryBlock({ category }: { category: Category }) {
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-sm">
                   <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
-                    <DialogDescription>
-                      Make changes to your profile here. Click save when
-                      you&apos;re done.
+                    <DialogTitle>Add Expense</DialogTitle>
+                    <DialogDescription asChild>
+                      <ExpenseForm onAddExpense={onAddExpense} />
                     </DialogDescription>
                   </DialogHeader>
-
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant="outline">Cancel</Button>
-                    </DialogClose>
-                    <Button type="submit">Save changes</Button>
-                  </DialogFooter>
                 </DialogContent>
               </Dialog>
               <Dialog>
@@ -84,19 +86,11 @@ export default function CategoryBlock({ category }: { category: Category }) {
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-sm">
                   <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
-                    <DialogDescription>
-                      Make changes to your profile here. Click save when
-                      you&apos;re done.
+                    <DialogTitle>Edit Category</DialogTitle>
+                    <DialogDescription asChild>
+                      <EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={onChangeInformation} />
                     </DialogDescription>
                   </DialogHeader>
-
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant="outline">Cancel</Button>
-                    </DialogClose>
-                    <Button type="submit">Save changes</Button>
-                  </DialogFooter>
                 </DialogContent>
               </Dialog>
             </div>
