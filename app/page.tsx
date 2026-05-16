@@ -2,17 +2,9 @@
 import Category from "@/src/objects/Category";
 import CategoryBlock from "@/src/components/Category/CategoryBlock";
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import AddCategoryForm from "@/src/components/CategoryForm/AddCategoryForm";
 import { PlusIcon } from "lucide-react";
+import { CategoryButton } from "@/src/components/Category/CategoryButtons/CategoryButton";
 
 export default function Home() {
   /*
@@ -62,28 +54,7 @@ export default function Home() {
           ))}
         </div>
         <div className="w-1/3">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="border drop-shadow-md border-gray-300"
-              >
-                <PlusIcon />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-sm">
-              <DialogHeader>
-                <DialogTitle>Add Expense</DialogTitle>
-                <DialogDescription asChild>
-                  <AddCategoryForm
-                    categories={categories}
-                    setCategories={setCategories}
-                  />
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+          <CategoryButton title="Add Category" icon={<PlusIcon />} DialogDescriptionComponent={<AddCategoryForm categories={categories} setCategories={setCategories} />} />
         </div>
       </div>
     </div>

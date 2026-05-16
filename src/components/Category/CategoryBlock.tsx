@@ -10,12 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
 import {
@@ -32,6 +26,7 @@ import AddExpenseForm from "../ExpenseForm/AddExpenseForm";
 import EditCategoryForm from "../CategoryForm/EditCategoryForm";
 import { addExpense, changeCategoryInformation, deleteCategory, editExpense, deleteExpense } from "@/src/utils/expenseCRUD";
 import EditExpenseForm from "../ExpenseForm/EditExpenseForm";
+import { CategoryButton } from "./CategoryButtons/CategoryButton";
 
 interface Expense {
   description: string;
@@ -39,7 +34,7 @@ interface Expense {
   date: Date;
 }
 
-export default function CategoryBlock({category, setCategories, categoryIndex}: { category: Category; setCategories: React.Dispatch<React.SetStateAction<Category[]>>; categoryIndex: number }) {
+export default function CategoryBlock({ category, setCategories, categoryIndex }: { category: Category; setCategories: React.Dispatch<React.SetStateAction<Category[]>>; categoryIndex: number }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const handleAddExpense = (expense: Expense) => {
@@ -75,70 +70,20 @@ export default function CategoryBlock({category, setCategories, categoryIndex}: 
             <p>{category.getName()}</p>
             { }
             <div className="hidden md:flex gap-2">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="border drop-shadow-md border-gray-300">
-                    <PlusIcon />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-xs">
-                  <DialogHeader>
-                    <DialogTitle>Add Expense</DialogTitle>
-                    <DialogDescription asChild>
-                      <AddExpenseForm onAddExpense={handleAddExpense} />
-                    </DialogDescription>
-                  </DialogHeader>
-                </DialogContent>
-              </Dialog>
-              <Dialog>
-                <DialogTrigger className="-mt-2" asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="mt-0 border drop-shadow-md border-gray-300">
-                    <Pencil />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-sm">
-                  <DialogHeader>
-                    <DialogTitle>Edit Category</DialogTitle>
-                    <DialogDescription asChild>
-                      <EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={handleChangeInformation} />
-                    </DialogDescription>
-                  </DialogHeader>
-                </DialogContent>
-              </Dialog>
-              <Dialog>
-                <DialogTrigger className="-mt-2" asChild>
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="mt-0 border drop-shadow-md border-gray-300">
-                    <Trash />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-sm">
-                  <DialogHeader>
-                    <DialogTitle>Delete Category</DialogTitle>
-                    <DialogDescription asChild>
-                      <div className="flex flex-col gap-4">
-                        <p>Are you sure you want to delete this category? This action cannot be undone.</p>
-                        <div className="flex gap-2 justify-end">
-                          <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                          </DialogClose>
-                          <DialogClose asChild>
-                            <Button variant="destructive" onClick={handleDeleteCategory}>Delete</Button>
-                          </DialogClose>
-                        </div>
-                      </div>
-                    </DialogDescription>
-                  </DialogHeader>
-                </DialogContent>
-              </Dialog>
+              <CategoryButton title="Add Expense" icon={<PlusIcon />} DialogDescriptionComponent={<AddExpenseForm onAddExpense={handleAddExpense} />} />
+              <CategoryButton title="Edit Category" icon={<Pencil />} DialogDescriptionComponent={<EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={handleChangeInformation} />} />
+              <CategoryButton title="Delete Category" icon={<Trash />} destructive={true} DialogDescriptionComponent={
+                <div className="flex flex-col gap-4">
+                  <p>Are you sure you want to delete this category? This action cannot be undone.</p>
+                  <div className="flex gap-2 justify-end">
+                    <DialogClose asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </DialogClose>
+                    <DialogClose asChild>
+                      <Button variant="destructive" onClick={handleDeleteCategory}>Delete</Button>
+                    </DialogClose>
+                  </div>
+                </div>} />
             </div>
           </CardTitle>
           <CardDescription className="text-left text-sm text-gray-500 ml-0.5">
@@ -184,70 +129,20 @@ export default function CategoryBlock({category, setCategories, categoryIndex}: 
             </div>
             <div className="flex w-full flex-col items-center gap-2 mt-4 md:hidden">
               <div className="flex gap-2">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="border drop-shadow-md border-gray-300">
-                      <PlusIcon />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-xs">
-                    <DialogHeader>
-                      <DialogTitle>Add Expense</DialogTitle>
-                      <DialogDescription asChild>
-                        <AddExpenseForm onAddExpense={handleAddExpense} />
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-                <Dialog>
-                  <DialogTrigger className="-mt-2" asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="mt-0 border drop-shadow-md border-gray-300">
-                      <Pencil />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>Edit Category</DialogTitle>
-                      <DialogDescription asChild>
-                        <EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={handleChangeInformation} />
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-                <Dialog>
-                <DialogTrigger className="-mt-2" asChild>
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="mt-0 border drop-shadow-md border-gray-300">
-                    <Trash />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-sm">
-                  <DialogHeader>
-                    <DialogTitle>Delete Category</DialogTitle>
-                    <DialogDescription asChild>
-                      <div className="flex flex-col gap-4">
-                        <p>Are you sure you want to delete this category? This action cannot be undone.</p>
-                        <div className="flex gap-2 justify-end">
-                          <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                          </DialogClose>
-                          <DialogClose asChild>
-                              <Button variant="destructive" onClick={handleDeleteCategory}>Delete</Button>
-                          </DialogClose>
-                        </div>
-                      </div>
-                    </DialogDescription>
-                  </DialogHeader>
-                </DialogContent>
-              </Dialog>
+                <CategoryButton title="Add Expense" icon={<PlusIcon />} DialogDescriptionComponent={<AddExpenseForm onAddExpense={handleAddExpense} />} />
+                <CategoryButton title="Edit Category" icon={<Pencil />} DialogDescriptionComponent={<EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={handleChangeInformation} />} />
+                <CategoryButton title="Delete Category" icon={<Trash />} destructive={true} DialogDescriptionComponent={
+                  <div className="flex flex-col gap-4">
+                    <p>Are you sure you want to delete this category? This action cannot be undone.</p>
+                    <div className="flex gap-2 justify-end">
+                      <DialogClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DialogClose>
+                      <DialogClose asChild>
+                        <Button variant="destructive" onClick={handleDeleteCategory}>Delete</Button>
+                      </DialogClose>
+                    </div>
+                  </div>} />
               </div>
             </div>
           </div>
