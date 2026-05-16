@@ -7,7 +7,7 @@ interface Expense {
   date: Date;
 }
 
-export default function ExpenseForm({
+export default function AddExpenseForm({
   onAddExpense,
 }: {
   onAddExpense: (expense: Expense) => void;

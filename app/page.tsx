@@ -37,40 +37,6 @@ export default function Home() {
     ]),
   ]);
 
-  const addExpense = (
-    categoryIndex: number,
-    expense: { description: string; amount: number; date: Date },
-  ) => {
-    setCategories((prev) => {
-      const updated = [...prev];
-      const currentCategory = updated[categoryIndex];
-      const newExpenses = [expense, ...currentCategory.getExpenses()];
-      updated[categoryIndex] = new Category(
-        currentCategory.getName(),
-        currentCategory.getMaxBudget(),
-        newExpenses,
-      );
-      return updated;
-    });
-  };
-
-  const changeCategoryInformation = (
-    categoryIndex: number,
-    name: string,
-    maxBudget: number,
-  ) => {
-    setCategories((prev) => {
-      const updated = [...prev];
-      const currentCategory = updated[categoryIndex];
-      updated[categoryIndex] = new Category(
-        name,
-        maxBudget,
-        currentCategory.getExpenses(),
-      );
-      return updated;
-    });
-  };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full py-2">
       <div className="flex flex-col items-center justify-center px-10 text-center gap-6">
@@ -90,10 +56,8 @@ export default function Home() {
             <CategoryBlock
               key={index}
               category={category}
-              onAddExpense={(expense) => addExpense(index, expense)}
-              onChangeInformation={(name, maxBudget) =>
-                changeCategoryInformation(index, name, maxBudget)
-              }
+              categoryIndex={index}
+              setCategories={setCategories}
             />
           ))}
         </div>

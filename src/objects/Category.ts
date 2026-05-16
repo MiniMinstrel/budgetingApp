@@ -15,32 +15,16 @@ class Category {
         return this.name;
     }
 
-    setName(name: string): void {
-        this.name = name;
-    }
-
     getMaxBudget(): number {
         return this.maxBudget;
-    }
-
-    setMaxBudget(maxBudget: number): void {
-        this.maxBudget = maxBudget;
     }
 
     getAmountSpent(): number {
         return this.amountSpent;
     }
 
-    setAmountSpent(amountSpent: number): void {
-        this.amountSpent = amountSpent;
-    }
-
     getExpenses(): Expense[] {
         return this.expenses;
-    }
-
-    setExpenses(expenses: Expense[]): void {
-        this.expenses = expenses;
     }
 
     getRemainingBudget(): number {

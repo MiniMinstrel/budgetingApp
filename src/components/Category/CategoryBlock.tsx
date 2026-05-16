@@ -16,20 +16,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 
-import { Edit, Pencil, PlusIcon } from "lucide-react";
-import ExpenseForm from "../ExpenseForm/ExpenseForm";
+import { Trash, Pencil, PlusIcon } from "lucide-react";
+import AddExpenseForm from "../ExpenseForm/AddExpenseForm";
 import EditCategoryForm from "../CategoryForm/EditCategoryForm";
+import { addExpense, changeCategoryInformation, deleteCategory, editExpense, deleteExpense } from "@/src/utils/expenseCRUD";
+import EditExpenseForm from "../ExpenseForm/EditExpenseForm";
 
 interface Expense {
   description: string;
@@ -37,8 +39,28 @@ interface Expense {
   date: Date;
 }
 
-export default function CategoryBlock({ category, onAddExpense, onChangeInformation }: { category: Category; onAddExpense: (expense: Expense) => void; onChangeInformation: (name: string, maxBudget: number) => void }) {
+export default function CategoryBlock({category, setCategories, categoryIndex}: { category: Category; setCategories: React.Dispatch<React.SetStateAction<Category[]>>; categoryIndex: number }) {
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const handleAddExpense = (expense: Expense) => {
+    addExpense(categoryIndex, setCategories, expense);
+  };
+
+  const handleChangeInformation = (name: string, maxBudget: number) => {
+    changeCategoryInformation(categoryIndex, setCategories, name, maxBudget);
+  };
+
+  const handleDeleteCategory = () => {
+    deleteCategory(categoryIndex, setCategories);
+  };
+
+  const handleEditExpense = (oldExpense: Expense, newExpense: Expense) => {
+    editExpense(categoryIndex, setCategories, oldExpense, newExpense);
+  };
+
+  const handleDeleteExpense = (expense: Expense) => {
+    deleteExpense(categoryIndex, setCategories, expense);
+  };
 
   useEffect(() => {
     setIsLoaded(true);
@@ -66,7 +88,7 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
                   <DialogHeader>
                     <DialogTitle>Add Expense</DialogTitle>
                     <DialogDescription asChild>
-                      <ExpenseForm onAddExpense={onAddExpense} />
+                      <AddExpenseForm onAddExpense={handleAddExpense} />
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
@@ -84,7 +106,35 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
                   <DialogHeader>
                     <DialogTitle>Edit Category</DialogTitle>
                     <DialogDescription asChild>
-                      <EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={onChangeInformation} />
+                      <EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={handleChangeInformation} />
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+              <Dialog>
+                <DialogTrigger className="-mt-2" asChild>
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="mt-0 border drop-shadow-md border-gray-300">
+                    <Trash />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-sm">
+                  <DialogHeader>
+                    <DialogTitle>Delete Category</DialogTitle>
+                    <DialogDescription asChild>
+                      <div className="flex flex-col gap-4">
+                        <p>Are you sure you want to delete this category? This action cannot be undone.</p>
+                        <div className="flex gap-2 justify-end">
+                          <DialogClose asChild>
+                            <Button variant="outline">Cancel</Button>
+                          </DialogClose>
+                          <DialogClose asChild>
+                            <Button variant="destructive" onClick={handleDeleteCategory}>Delete</Button>
+                          </DialogClose>
+                        </div>
+                      </div>
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
@@ -120,17 +170,7 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
                         .getExpenses()
                         .slice(0, 2)
                         .map((expense, index) => (
-                          <TableRow key={index}>
-                            <TableCell>
-                              {expense.description.length > 10
-                                ? expense.description.substring(0, 10) + "..."
-                                : expense.description}
-                            </TableCell>
-                            <TableCell>${expense.amount}</TableCell>
-                            <TableCell>
-                              {expense.date.toLocaleDateString()}
-                            </TableCell>
-                          </TableRow>
+                          <EditExpenseForm key={index} expense={expense} index={index} onEditExpense={handleEditExpense} onDeleteExpense={handleDeleteExpense} />
                         ))}
                       {category.getExpenses().length > 2 && (
                         <TableRow>
@@ -157,7 +197,7 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
                     <DialogHeader>
                       <DialogTitle>Add Expense</DialogTitle>
                       <DialogDescription asChild>
-                        <ExpenseForm onAddExpense={onAddExpense} />
+                        <AddExpenseForm onAddExpense={handleAddExpense} />
                       </DialogDescription>
                     </DialogHeader>
                   </DialogContent>
@@ -175,11 +215,39 @@ export default function CategoryBlock({ category, onAddExpense, onChangeInformat
                     <DialogHeader>
                       <DialogTitle>Edit Category</DialogTitle>
                       <DialogDescription asChild>
-                        <EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={onChangeInformation} />
+                        <EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={handleChangeInformation} />
                       </DialogDescription>
                     </DialogHeader>
                   </DialogContent>
                 </Dialog>
+                <Dialog>
+                <DialogTrigger className="-mt-2" asChild>
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="mt-0 border drop-shadow-md border-gray-300">
+                    <Trash />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-sm">
+                  <DialogHeader>
+                    <DialogTitle>Delete Category</DialogTitle>
+                    <DialogDescription asChild>
+                      <div className="flex flex-col gap-4">
+                        <p>Are you sure you want to delete this category? This action cannot be undone.</p>
+                        <div className="flex gap-2 justify-end">
+                          <DialogClose asChild>
+                            <Button variant="outline">Cancel</Button>
+                          </DialogClose>
+                          <DialogClose asChild>
+                              <Button variant="destructive" onClick={handleDeleteCategory}>Delete</Button>
+                          </DialogClose>
+                        </div>
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
               </div>
             </div>
           </div>
