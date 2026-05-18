@@ -1,12 +1,16 @@
 "use client";
 import Category from "@/src/objects/Category";
 import CategoryBlock from "@/src/components/Category/CategoryBlock";
-import { useState } from "react";
 import AddCategoryForm from "@/src/components/CategoryForm/AddCategoryForm";
 import { PlusIcon } from "lucide-react";
 import { CategoryButton } from "@/src/components/Category/CategoryButtons/CategoryButton";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>([]);
+
   /*
   This main page requires the minimum...
   - A list of categories.
@@ -15,19 +19,21 @@ export default function Home() {
   - A button to add categories and expenses.
   - A button to view the details of each category.
   */
-  const [categories, setCategories] = useState<Category[]>([
-    new Category("Groceries", 200, [
-      { description: "Milk", amount: 40, date: new Date() },
-    ]),
-    new Category("Transportation", 300, [
-      { description: "Plane", amount: 200, date: new Date() },
-      { description: "Gas", amount: 25, date: new Date() },
-    ]),
-    new Category("Entertainment", 200, [
-      { description: "Movies", amount: 80, date: new Date() },
-      { description: "Concert", amount: 100, date: new Date() },
-    ]),
-  ]);
+  useEffect(() => {
+    // Fetch categories from the backend API
+    //timeout to test loading state
+    setTimeout(() => {
+      axios.get("http://localhost:5298/categories").then((response) => {
+        console.log("Fetched categories:", response.data);
+        const categoryObjects = response.data.map(
+          (item: any) =>
+            new Category(item.id, item.name, item.maxBudget, item.expenses),
+        );
+        setCategories(categoryObjects);
+        setLoading(false);
+      });
+    }, 2000);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full py-2">
@@ -38,7 +44,10 @@ export default function Home() {
             A simple budgeting app to help you manage your finances.
           </p>
         </div>
-        {categories.length === 0 && (
+        {loading && (
+          <p className="text-xl text-gray-500">Loading categories...</p>
+        )}
+        {categories.length === 0 && !loading && (
           <p className="text-xl text-gray-500">
             No categories added yet. Add a new category to get started!
           </p>
@@ -48,13 +57,22 @@ export default function Home() {
             <CategoryBlock
               key={index}
               category={category}
-              categoryIndex={index}
+              categoryId={category.getId()}
               setCategories={setCategories}
             />
           ))}
         </div>
         <div className="w-1/3">
-          <CategoryButton title="Add Category" icon={<PlusIcon />} DialogDescriptionComponent={<AddCategoryForm categories={categories} setCategories={setCategories} />} />
+          <CategoryButton
+            title="Add Category"
+            icon={<PlusIcon />}
+            DialogDescriptionComponent={
+              <AddCategoryForm
+                categories={categories}
+                setCategories={setCategories}
+              />
+            }
+          />
         </div>
       </div>
     </div>

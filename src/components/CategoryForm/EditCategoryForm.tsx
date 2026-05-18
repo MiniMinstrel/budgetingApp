@@ -25,8 +25,7 @@ export default function EditCategoryForm({
     <div className="mt-6 w-full max-w-md">
       <form
         onSubmit={handleCategorySubmit}
-        className="flex flex-col gap-4 p-4 border rounded"
-      >
+        className="flex flex-col gap-4 p-4 border rounded">
         <input
           type="text"
           name="name"
@@ -48,8 +47,7 @@ export default function EditCategoryForm({
         <DialogClose asChild>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
             Save Changes
           </button>
         </DialogClose>

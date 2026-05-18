@@ -1,4 +1,4 @@
-import Category from "@/src/objects/Category";
+import Category, { Expense } from "@/src/objects/Category";
 import { RadialChart } from "./RadialChart/RadialChart";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DialogClose,
-} from "@/components/ui/dialog";
+import { DialogClose } from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -24,37 +22,45 @@ import {
 import { Trash, Pencil, PlusIcon } from "lucide-react";
 import AddExpenseForm from "../ExpenseForm/AddExpenseForm";
 import EditCategoryForm from "../CategoryForm/EditCategoryForm";
-import { addExpense, changeCategoryInformation, deleteCategory, editExpense, deleteExpense } from "@/src/utils/expenseCRUD";
+import {
+  addExpense,
+  changeCategoryInformation,
+  deleteCategory,
+  editExpense,
+  deleteExpense,
+} from "@/src/utils/expenseCRUD";
 import EditExpenseForm from "../ExpenseForm/EditExpenseForm";
 import { CategoryButton } from "./CategoryButtons/CategoryButton";
 
-interface Expense {
-  description: string;
-  amount: number;
-  date: Date;
-}
-
-export default function CategoryBlock({ category, setCategories, categoryIndex }: { category: Category; setCategories: React.Dispatch<React.SetStateAction<Category[]>>; categoryIndex: number }) {
+export default function CategoryBlock({
+  category,
+  setCategories,
+  categoryId,
+}: {
+  category: Category;
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+  categoryId: number;
+}) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const handleAddExpense = (expense: Expense) => {
-    addExpense(categoryIndex, setCategories, expense);
+    addExpense(categoryId, setCategories, expense);
   };
 
   const handleChangeInformation = (name: string, maxBudget: number) => {
-    changeCategoryInformation(categoryIndex, setCategories, name, maxBudget);
+    changeCategoryInformation(categoryId, setCategories, name, maxBudget);
   };
 
   const handleDeleteCategory = () => {
-    deleteCategory(categoryIndex, setCategories);
+    deleteCategory(categoryId, setCategories);
   };
 
   const handleEditExpense = (oldExpense: Expense, newExpense: Expense) => {
-    editExpense(categoryIndex, setCategories, oldExpense, newExpense);
+    editExpense(categoryId, setCategories, oldExpense, newExpense);
   };
 
   const handleDeleteExpense = (expense: Expense) => {
-    deleteExpense(categoryIndex, setCategories, expense);
+    deleteExpense(categoryId, setCategories, expense);
   };
 
   useEffect(() => {
@@ -68,26 +74,56 @@ export default function CategoryBlock({ category, setCategories, categoryIndex }
         <CardHeader>
           <CardTitle className="flex justify-between items-center text-4xl font-bold text-left ml-0">
             <p>{category.getName()}</p>
-            { }
+            {}
             <div className="hidden md:flex gap-2">
-              <CategoryButton title="Add Expense" icon={<PlusIcon />} DialogDescriptionComponent={<AddExpenseForm onAddExpense={handleAddExpense} />} />
-              <CategoryButton title="Edit Category" icon={<Pencil />} DialogDescriptionComponent={<EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={handleChangeInformation} />} />
-              <CategoryButton title="Delete Category" icon={<Trash />} destructive={true} DialogDescriptionComponent={
-                <div className="flex flex-col gap-4">
-                  <p>Are you sure you want to delete this category? This action cannot be undone.</p>
-                  <div className="flex gap-2 justify-end">
-                    <DialogClose asChild>
-                      <Button variant="outline">Cancel</Button>
-                    </DialogClose>
-                    <DialogClose asChild>
-                      <Button variant="destructive" onClick={handleDeleteCategory}>Delete</Button>
-                    </DialogClose>
+              <CategoryButton
+                title="Add Expense"
+                icon={<PlusIcon />}
+                DialogDescriptionComponent={
+                  <AddExpenseForm onAddExpense={handleAddExpense} />
+                }
+              />
+              <CategoryButton
+                title="Edit Category"
+                icon={<Pencil />}
+                DialogDescriptionComponent={
+                  <EditCategoryForm
+                    currentName={category.getName()}
+                    currentMaxBudget={category.getMaxBudget()}
+                    onChangeInformation={handleChangeInformation}
+                  />
+                }
+              />
+              <CategoryButton
+                title="Delete Category"
+                icon={<Trash />}
+                destructive={true}
+                DialogDescriptionComponent={
+                  <div className="flex flex-col gap-4">
+                    <p>
+                      Are you sure you want to delete this category? This action
+                      cannot be undone.
+                    </p>
+                    <div className="flex gap-2 justify-end">
+                      <DialogClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DialogClose>
+                      <DialogClose asChild>
+                        <Button
+                          variant="destructive"
+                          onClick={handleDeleteCategory}>
+                          Delete
+                        </Button>
+                      </DialogClose>
+                    </div>
                   </div>
-                </div>} />
+                }
+              />
             </div>
           </CardTitle>
           <CardDescription className="text-left text-sm text-gray-500 ml-0.5">
-            {category.getExpenses().length} Expenses || ${category.getAmountSpent()} / ${category.getMaxBudget()}
+            {category.getExpenses().length} Expenses || $
+            {category.getAmountSpent()} / ${category.getMaxBudget()}
             <br />
           </CardDescription>
         </CardHeader>
@@ -115,7 +151,13 @@ export default function CategoryBlock({ category, setCategories, categoryIndex }
                         .getExpenses()
                         .slice(0, 2)
                         .map((expense, index) => (
-                          <EditExpenseForm key={index} expense={expense} index={index} onEditExpense={handleEditExpense} onDeleteExpense={handleDeleteExpense} />
+                          <EditExpenseForm
+                            key={index}
+                            expense={expense}
+                            index={index}
+                            onEditExpense={handleEditExpense}
+                            onDeleteExpense={handleDeleteExpense}
+                          />
                         ))}
                       {category.getExpenses().length > 2 && (
                         <TableRow>
@@ -129,20 +171,49 @@ export default function CategoryBlock({ category, setCategories, categoryIndex }
             </div>
             <div className="flex w-full flex-col items-center gap-2 mt-4 md:hidden">
               <div className="flex gap-2">
-                <CategoryButton title="Add Expense" icon={<PlusIcon />} DialogDescriptionComponent={<AddExpenseForm onAddExpense={handleAddExpense} />} />
-                <CategoryButton title="Edit Category" icon={<Pencil />} DialogDescriptionComponent={<EditCategoryForm currentName={category.getName()} currentMaxBudget={category.getMaxBudget()} onChangeInformation={handleChangeInformation} />} />
-                <CategoryButton title="Delete Category" icon={<Trash />} destructive={true} DialogDescriptionComponent={
-                  <div className="flex flex-col gap-4">
-                    <p>Are you sure you want to delete this category? This action cannot be undone.</p>
-                    <div className="flex gap-2 justify-end">
-                      <DialogClose asChild>
-                        <Button variant="outline">Cancel</Button>
-                      </DialogClose>
-                      <DialogClose asChild>
-                        <Button variant="destructive" onClick={handleDeleteCategory}>Delete</Button>
-                      </DialogClose>
+                <CategoryButton
+                  title="Add Expense"
+                  icon={<PlusIcon />}
+                  DialogDescriptionComponent={
+                    <AddExpenseForm onAddExpense={handleAddExpense} />
+                  }
+                />
+                <CategoryButton
+                  title="Edit Category"
+                  icon={<Pencil />}
+                  DialogDescriptionComponent={
+                    <EditCategoryForm
+                      currentName={category.getName()}
+                      currentMaxBudget={category.getMaxBudget()}
+                      onChangeInformation={handleChangeInformation}
+                    />
+                  }
+                />
+                <CategoryButton
+                  title="Delete Category"
+                  icon={<Trash />}
+                  destructive={true}
+                  DialogDescriptionComponent={
+                    <div className="flex flex-col gap-4">
+                      <p>
+                        Are you sure you want to delete this category? This
+                        action cannot be undone.
+                      </p>
+                      <div className="flex gap-2 justify-end">
+                        <DialogClose asChild>
+                          <Button variant="outline">Cancel</Button>
+                        </DialogClose>
+                        <DialogClose asChild>
+                          <Button
+                            variant="destructive"
+                            onClick={handleDeleteCategory}>
+                            Delete
+                          </Button>
+                        </DialogClose>
+                      </div>
                     </div>
-                  </div>} />
+                  }
+                />
               </div>
             </div>
           </div>

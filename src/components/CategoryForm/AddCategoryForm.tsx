@@ -1,5 +1,6 @@
 import Category from "@/src/objects/Category";
 import { DialogClose } from "@/components/ui/dialog";
+import axios from "axios";
 
 export default function AddCategoryForm({
   categories,
@@ -15,9 +16,18 @@ export default function AddCategoryForm({
     const budget = parseFloat(formData.get("budget") as string);
 
     if (name && budget > 0) {
-      setCategories([...categories, new Category(name, budget)]);
-      e.currentTarget.reset();
+      const request = axios.post("http://localhost:5298/categories", {
+        name,
+        maxBudget: budget,
+      });
+      request.then((response) => {
+        setCategories([
+          ...categories,
+          new Category(response.data.id, name, budget, []),
+        ]);
+      });
     }
+    e.currentTarget.reset();
   };
 
   return (
@@ -43,10 +53,10 @@ export default function AddCategoryForm({
         />
         <DialogClose asChild>
           <button
-          type="submit"
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-          Add Category
-        </button>
+            type="submit"
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+            Add Category
+          </button>
         </DialogClose>
       </form>
     </div>

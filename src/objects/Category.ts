@@ -1,14 +1,20 @@
 class Category {
+    private id: number;
     private name: string;
     private maxBudget: number;
     private amountSpent: number;
     private expenses: Expense[];
 
-    constructor(name: string, maxBudget: number, expenses: Expense[] = []) {
+    constructor(id: number, name: string, maxBudget: number, expenses: Expense[] = []) {
+        this.id = id;
         this.name = name;
         this.maxBudget = maxBudget;
         this.amountSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
         this.expenses = expenses;
+    }
+
+    getId(): number {
+        return this.id;
     }
 
     getName(): string {
@@ -24,7 +30,7 @@ class Category {
     }
 
     getExpenses(): Expense[] {
-        return this.expenses;
+        return this.expenses.reverse();
     }
 
     getRemainingBudget(): number {
@@ -32,8 +38,9 @@ class Category {
     }
 }
 
-interface Expense {
-    description: string;
+export interface Expense {
+    id?: number;
+    name: string;
     amount: number;
     date: Date;
 }

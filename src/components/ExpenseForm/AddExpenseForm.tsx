@@ -1,11 +1,6 @@
 import React from "react";
 import { DialogClose } from "@/components/ui/dialog";
-
-interface Expense {
-  description: string;
-  amount: number;
-  date: Date;
-}
+import { Expense } from "@/src/objects/Category";
 
 export default function AddExpenseForm({
   onAddExpense,
@@ -19,11 +14,11 @@ export default function AddExpenseForm({
     const description = formData.get("description") as string;
     if (amount > 0) {
       const expense = {
-        description,
-        amount,
+        name: description,
+        amount: amount,
         date: new Date(),
       };
-      onAddExpense(expense);
+      onAddExpense(expense as Expense);
       e.currentTarget.reset();
     }
   };
